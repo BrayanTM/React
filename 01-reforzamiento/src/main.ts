@@ -8,7 +8,8 @@ import "./style.css";
 // import "./bases/07-array-destructured";
 // import "./bases/08-imp-exp";
 // import "./bases/09-promises";
-import "./bases/10-fetchapi";
+// import "./bases/10-fetchapi";
+import "./bases/11-async-await";
 
 // import { getHeroesByOwner } from "./bases/08-imp-exp";
 // import { Owner } from "./data/heroes.data";
