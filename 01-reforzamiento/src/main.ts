@@ -7,9 +7,14 @@ import "./style.css";
 // import "./bases/06-obj-destructuring";
 // import "./bases/07-array-destructured";
 import "./bases/08-imp-exp";
+// import { getHeroesByOwner } from "./bases/08-imp-exp";
+// import { Owner } from "./data/heroes.data";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
     <h1> Hola Mundo!</h1>
   </div>
 `;
+
+// En el main.ts usaran la funcion
+// console.log(getHeroesByOwner(Owner.DC));
