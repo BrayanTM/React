@@ -6,10 +6,19 @@ import "./style.css";
 // import "./bases/05-functions";
 // import "./bases/06-obj-destructuring";
 // import "./bases/07-array-destructured";
-import "./bases/08-imp-exp";
+// import "./bases/08-imp-exp";
+// import "./bases/09-promises";
+// import "./bases/10-fetchapi";
+import "./bases/11-async-await";
+
+// import { getHeroesByOwner } from "./bases/08-imp-exp";
+// import { Owner } from "./data/heroes.data";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
     <h1> Hola Mundo!</h1>
   </div>
 `;
+
+// En el main.ts usaran la funcion
+// console.log(getHeroesByOwner(Owner.DC));
