@@ -25,4 +25,14 @@ describe("MyAwesomeApp", () => {
 
     expect(h1.innerHTML).toContain("Brayan");
   });
+
+  test("should match snapshot", () => {
+    const { container } = render(<MyAwesomeApp />);
+    expect(container).toMatchSnapshot();
+  });
+
+  test("should match snapshot", () => {
+    render(<MyAwesomeApp />);
+    expect(screen.getByTestId("my-awesome-app")).toMatchSnapshot();
+  });
 });
