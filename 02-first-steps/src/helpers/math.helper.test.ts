@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { add, multiply, subtract } from "./math.helper";
+import { add, divide, multiply, subtract } from "./math.helper";
 
 describe("add", () => {
   test("should add two positeive numbers", () => {
@@ -64,5 +64,31 @@ describe("multiply", () => {
 
     // ! 3. Assert
     expect(result).toBe(a * b);
+  });
+
+  describe("divide", () => {
+    test("should divide two positeive numbers", () => {
+      // ! 1. Arrange
+      const a = 6;
+      const b = 2;
+
+      // ! 2. Act
+      const result = divide(a, b);
+
+      // ! 3. Assert
+      expect(result).toBe(a / b);
+    });
+
+    test("should multiply two negative numbers", () => {
+      // ! 1. Arrange
+      const a = -6;
+      const b = -2;
+
+      // ! 2. Act
+      const result = divide(a, b);
+
+      // ! 3. Assert
+      expect(result).toBe(a / b);
+    });
   });
 });
