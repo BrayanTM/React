@@ -1,4 +1,4 @@
-import { useState, type KeyboardEvent } from "react";
+import { useEffect, useState, type KeyboardEvent } from "react";
 
 interface SearchBarProps {
   placeholder?: string;
@@ -11,9 +11,19 @@ export const SearchBar = ({
 }: SearchBarProps) => {
   const [query, setQuery] = useState("");
 
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      onQuery(query);
+    }, 700);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [query, onQuery]);
+
   const handleSearch = () => {
     onQuery(query);
-    setQuery("");
+    // setQuery("");
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
