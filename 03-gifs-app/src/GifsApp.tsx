@@ -6,14 +6,20 @@ import { CustomHeader } from "./shared/components/CustomHeader";
 import { SearchBar } from "./shared/components/SearchBar";
 
 export const GifsApp = () => {
-  const [previousTerms, setPreviousTerms] = useState(["dragon ball z"]);
+  const [previousTerms, setPreviousTerms] = useState(["Goku"]);
 
   const handleTermClick = (term: string) => {
     console.log(term);
   };
 
   const handleSearch = (query: string) => {
-    console.log(query);
+    query = query.trim().toLocaleLowerCase();
+
+    if (query.length === 0) return;
+
+    if (previousTerms.includes(query)) return;
+
+    setPreviousTerms([query, ...previousTerms].slice(0, 8));
   };
 
   return (
