@@ -1,4 +1,4 @@
-import { describe, expect, test } from "vitest";
+import { beforeEach, describe, expect, test } from "vitest";
 import AxiosMockAdapter from "axios-mock-adapter";
 
 import { giphySearchResponseMock } from "../../../test/mocks/giphy.response.data";
@@ -6,7 +6,12 @@ import { getGifsByQuery } from "./get-gifs-by-query.action";
 import { giphyApi } from "../api/giphy.api";
 
 describe("getGifsByQuery", () => {
-  const mock = new AxiosMockAdapter(giphyApi);
+  let mock = new AxiosMockAdapter(giphyApi);
+
+  beforeEach(() => {
+    // mock.reset();
+    mock = new AxiosMockAdapter(giphyApi);
+  });
 
   // test("should return a list of gifs", async () => {
   //   const gifs = await getGifsByQuery("Halo");
@@ -34,5 +39,22 @@ describe("getGifsByQuery", () => {
       expect(typeof gif.width).toBe("number");
       expect(typeof gif.height).toBe("number");
     });
+  });
+
+  test("should return an empty list of gifs if query is empty", async () => {
+    const gifs = await getGifsByQuery("");
+    expect(gifs.length).toBe(0);
+  });
+
+  test("should handle error when de API returns an error", async () => {
+    mock.onGet("/search").reply(400, {
+      data: {
+        message: "Bad Request",
+      },
+    });
+
+    const gifs = await getGifsByQuery("Halo");
+
+    expect(gifs.length).toBe(0);
   });
 });
