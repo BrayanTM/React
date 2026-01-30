@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useEffectEvent, useState } from "react";
 
 const colors = {
   red: "bg-red-500 animate-pulse",
@@ -25,6 +25,29 @@ export const TrafficLightWithEffect = () => {
     };
   }, [countDown]);
 
+  const setLightAction = useEffectEvent(() => {
+    setCountDown(5);
+
+    if (light === "red") {
+      setLight("green");
+      return;
+    }
+
+    if (light === "green") {
+      setLight("yellow");
+      return;
+    }
+    if (light === "yellow") {
+      setLight("red");
+      return;
+    }
+  });
+
+  useEffect(() => {
+    if (countDown > 0) return;
+    setLightAction();
+  }, [countDown]);
+
   return (
     <div className="bg-gradient">
       <div className="flex flex-col items-center space-y-8">
@@ -32,6 +55,13 @@ export const TrafficLightWithEffect = () => {
           Semaforo con useEffect
         </h1>
         <h2 className="text-xl text-white">Countdown {countDown}</h2>
+
+        <div className="h-2 w-64 rounded-full bg-gray-700">
+          <div
+            className="h-2 rounded-full bg-blue-500 transition-all duration-1000 ease-linear"
+            style={{ width: `${(countDown / 5) * 100}%` }}
+          ></div>
+        </div>
 
         <div
           className={`h-32 w-32 rounded-full ${light === "red" ? [colors[light]] : "bg-gray-500"}`}
