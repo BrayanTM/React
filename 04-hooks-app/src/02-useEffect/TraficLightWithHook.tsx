@@ -1,7 +1,8 @@
-import { useTrafficLight, colors } from "../hooks/useTrafficLight";
+import { useTrafficLight } from "../hooks/useTrafficLight";
 
 export const TrafficLightWithHook = () => {
-  const { countDown, light } = useTrafficLight();
+  const { countDown, percentage, greenLight, yellowLight, redLight } =
+    useTrafficLight();
 
   return (
     <div className="bg-gradient">
@@ -14,19 +15,13 @@ export const TrafficLightWithHook = () => {
         <div className="h-2 w-64 rounded-full bg-gray-700">
           <div
             className="h-2 rounded-full bg-blue-500 transition-all duration-1000 ease-linear"
-            style={{ width: `${(countDown / 5) * 100}%` }}
+            style={{ width: `${percentage}%` }}
           ></div>
         </div>
 
-        <div
-          className={`h-32 w-32 rounded-full ${light === "red" ? [colors[light]] : "bg-gray-500"}`}
-        ></div>
-        <div
-          className={`h-32 w-32 rounded-full ${light === "yellow" ? [colors[light]] : "bg-gray-500"}`}
-        ></div>
-        <div
-          className={`h-32 w-32 rounded-full ${light === "green" ? [colors[light]] : "bg-gray-500"}`}
-        ></div>
+        <div className={`h-32 w-32 rounded-full ${redLight}`}></div>
+        <div className={`h-32 w-32 rounded-full ${yellowLight}`}></div>
+        <div className={`h-32 w-32 rounded-full ${greenLight}`}></div>
       </div>
     </div>
   );

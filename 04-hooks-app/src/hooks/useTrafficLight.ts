@@ -1,15 +1,15 @@
 import { useEffect, useEffectEvent, useState } from "react";
 
-export const colors = {
+const colors = {
   red: "bg-red-500 animate-pulse",
   yellow: "bg-yellow-500 animate-pulse",
   green: "bg-green-500 animate-pulse",
 };
 
-export const useTrafficLight = () => {
-  // type TrafficLightColor = "red" | "yellow" | "green";
-  type TrafficLightColor = keyof typeof colors;
+// type TrafficLightColor = "red" | "yellow" | "green";
+type TrafficLightColor = keyof typeof colors;
 
+export const useTrafficLight = () => {
   const [light, setLight] = useState<TrafficLightColor>("red");
   const [countDown, setCountDown] = useState(5);
 
@@ -50,8 +50,16 @@ export const useTrafficLight = () => {
 
   return {
     // Properties
+    colors,
     countDown,
     light,
+
+    // Computed
+    percentage: (countDown / 5) * 100,
+    greenLight: light === "green" ? colors.green : "bg-gray-500",
+    yellowLight: light === "yellow" ? colors.green : "bg-gray-500",
+    redLight: light === "red" ? colors.green : "bg-gray-500",
+
     // Methods
   };
 };
