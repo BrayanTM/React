@@ -16,6 +16,21 @@ export type TaskAction =
   | { type: "TOGGLE_TODO"; payload: number }
   | { type: "DELETE_TODO"; payload: number };
 
+export const getTaskInitialState = (): TaskState => {
+  const localStorageState = localStorage.getItem("task-state");
+
+  if (!localStorageState) {
+    return {
+      todos: [],
+      completed: 0,
+      pending: 0,
+      length: 0,
+    };
+  }
+
+  return JSON.parse(localStorageState);
+};
+
 export const taskReducer = (
   state: TaskState,
   action: TaskAction,
