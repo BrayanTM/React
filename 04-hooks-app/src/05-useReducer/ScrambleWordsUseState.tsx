@@ -2,47 +2,60 @@
 // Es necesario componentes de Shadcn/ui
 // https://ui.shadcn.com/docs/installation/vite
 
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { SkipForward, Play } from "lucide-react";
 import confetti from "canvas-confetti";
-import {
-  getInitialState,
-  scrambleWordsReducer,
-} from "./reducer/scrambleWordsReducer";
+
+const GAME_WORDS = [
+  "REACT",
+  "JAVASCRIPT",
+  "TYPESCRIPT",
+  "HTML",
+  "ANGULAR",
+  "SOLID",
+  "NODE",
+  "VUEJS",
+  "SVELTE",
+  "EXPRESS",
+  "MONGODB",
+  "POSTGRES",
+  "DOCKER",
+  "KUBERNETES",
+  "WEBPACK",
+  "VITE",
+  "TAILWIND",
+];
+
+// Esta función mezcla el arreglo para que siempre sea aleatorio
+const shuffleArray = (array: string[]) => {
+  return array.sort(() => Math.random() - 0.5);
+};
+
+// Esta función mezcla las letras de la palabra
+const scrambleWord = (word: string = "") => {
+  return word
+    .split("")
+    .sort(() => Math.random() - 0.5)
+    .join("");
+};
 
 export const ScrambleWords = () => {
-  const [state, dispatch] = useReducer(scrambleWordsReducer, getInitialState());
+  const [words, setWords] = useState(shuffleArray(GAME_WORDS));
 
-  const {
-    currentWord,
-    errorCounter,
-    guess,
-    isGameOver,
-    maxAllowErrors,
-    maxSkips,
-    points,
-    scrambledWord,
-    skipCounter,
-    totalWords,
-    words,
-  } = state;
+  const [currentWord, setCurrentWord] = useState(words[0]);
+  const [scrambledWord, setScrambledWord] = useState(scrambleWord(currentWord));
+  const [guess, setGuess] = useState("");
+  const [points, setPoints] = useState(0);
+  const [errorCounter, setErrorCounter] = useState(0);
+  const [maxAllowErrors, setMaxAllowErrors] = useState(3);
 
-  // const [words, setWords] = useState(shuffleArray(GAME_WORDS));
+  const [skipCounter, setSkipCounter] = useState(0);
+  const [maxSkips, setMaxSkips] = useState(3);
 
-  // const [currentWord, setCurrentWord] = useState(words[0]);
-  // const [scrambledWord, setScrambledWord] = useState(scrambleWord(currentWord));
-  // const [guess, setGuess] = useState("");
-  // const [points, setPoints] = useState(0);
-  // const [errorCounter, setErrorCounter] = useState(0);
-  // const [maxAllowErrors, setMaxAllowErrors] = useState(3);
-
-  // const [skipCounter, setSkipCounter] = useState(0);
-  // const [maxSkips, setMaxSkips] = useState(3);
-
-  // const [isGameOver, setIsGameOver] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
 
   const handleGuessSubmit = (e: React.FormEvent) => {
     // Previene el refresh de la página
@@ -50,54 +63,57 @@ export const ScrambleWords = () => {
     // Implementar lógica de juego
     // console.log("Intento de adivinanza:", guess, currentWord);
 
-    // if (guess.length === 0) return;
+    if (guess.length === 0) return;
 
-    // if (guess === currentWord) {
-    //   const newWords = words.slice(1);
+    if (guess === currentWord) {
+      const newWords = words.slice(1);
 
-    //   confetti({
-    //     particleCount: 100,
-    //     spread: 120,
-    //     origin: { y: 0.6 },
-    //   });
+      confetti({
+        particleCount: 100,
+        spread: 120,
+        origin: { y: 0.6 },
+      });
 
-    //   setWords(newWords);
-    //   setCurrentWord(newWords[0]);
-    //   setScrambledWord(scrambleWord(newWords[0]));
-    //   setPoints(points + 1);
-    //   setGuess("");
-    //   return;
-    // }
+      setWords(newWords);
+      setCurrentWord(newWords[0]);
+      setScrambledWord(scrambleWord(newWords[0]));
+      setPoints(points + 1);
+      setGuess("");
+      return;
+    }
 
-    // setErrorCounter(errorCounter + 1);
-    // setGuess("");
+    setErrorCounter(errorCounter + 1);
+    setGuess("");
 
-    // if (errorCounter + 1 >= maxAllowErrors) {
-    //   setIsGameOver(true);
-    // }
+    if (errorCounter + 1 >= maxAllowErrors) {
+      setIsGameOver(true);
+    }
   };
 
+  useEffect(() => {}, [scrambledWord]);
+
   const handleSkip = () => {
-    // if (skipCounter >= maxSkips) return;
-    // const updatedWords = words.slice(1);
-    // setSkipCounter(skipCounter + 1);
-    // setWords(updatedWords);
-    // setCurrentWord(updatedWords[0]);
-    // setScrambledWord(scrambleWord(updatedWords[0]));
-    // setGuess("");
+    if (skipCounter >= maxSkips) return;
+
+    const updatedWords = words.slice(1);
+    setSkipCounter(skipCounter + 1);
+    setWords(updatedWords);
+    setCurrentWord(updatedWords[0]);
+    setScrambledWord(scrambleWord(updatedWords[0]));
+    setGuess("");
   };
 
   const handlePlayAgain = () => {
-    // setPoints(0);
-    // setErrorCounter(0);
-    // setGuess("");
-    // setWords(shuffleArray(GAME_WORDS));
-    // setCurrentWord(GAME_WORDS[0]);
-    // setScrambledWord(scrambleWord(GAME_WORDS[0]));
-    // setIsGameOver(false);
-    // setSkipCounter(0);
-    // setMaxAllowErrors(3);
-    // setMaxSkips(3);
+    setPoints(0);
+    setErrorCounter(0);
+    setGuess("");
+    setWords(shuffleArray(GAME_WORDS));
+    setCurrentWord(GAME_WORDS[0]);
+    setScrambledWord(scrambleWord(GAME_WORDS[0]));
+    setIsGameOver(false);
+    setSkipCounter(0);
+    setMaxAllowErrors(3);
+    setMaxSkips(3);
   };
 
   //! Si ya no hay palabras para jugar, se muestra el mensaje de fin de juego
@@ -183,8 +199,7 @@ export const ScrambleWords = () => {
                     type="text"
                     value={guess}
                     onChange={(e) =>
-                      // setGuess(e.target.value.toUpperCase().trim())
-                      console.log(e.target.value)
+                      setGuess(e.target.value.toUpperCase().trim())
                     }
                     placeholder="Ingresa tu palabra..."
                     className="h-12 border-2 border-indigo-200 text-center text-lg font-semibold transition-colors focus:border-indigo-500"
@@ -206,7 +221,7 @@ export const ScrambleWords = () => {
             <div className="mb-6 grid grid-cols-2 gap-4">
               <div className="rounded-lg border border-green-200 bg-linear-to-br from-green-50 to-emerald-50 p-4 text-center">
                 <div className="text-2xl font-bold text-green-600">
-                  {points} / {totalWords}
+                  {points} / {GAME_WORDS.length}
                 </div>
                 <div className="text-sm font-medium text-green-700">Puntos</div>
               </div>
