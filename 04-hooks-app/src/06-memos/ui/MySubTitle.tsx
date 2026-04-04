@@ -1,0 +1,16 @@
+interface Props {
+  subTitle: string;
+}
+
+export const MySubTitle = ({ subTitle }: Props) => {
+  console.log("MySubTitle re-render");
+
+  return (
+    <>
+      <h6 className="text-2xl font-bold">{subTitle}</h6>
+      <button className="cursor-pointer rounded-md bg-indigo-500 px-2 py-1 text-white">
+        Lammar a Funcion
+      </button>
+    </>
+  );
+};
