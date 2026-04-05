@@ -1,7 +1,13 @@
-import { useEffect } from "react";
-import { getUserAction } from "./api/get-user.action";
+import { use, type Usable } from "react";
+import { type User } from "./api/get-user.action";
 
-export const ClientInformation = async ({ id }: { id: number }) => {
+interface Props {
+  getUser: Usable<User>;
+}
+
+export const ClientInformation = ({ getUser }: Props) => {
+  const user = use(getUser);
+
   //   const user = await getUserAction(id);
 
   //   useEffect(() => {
@@ -10,10 +16,12 @@ export const ClientInformation = async ({ id }: { id: number }) => {
 
   return (
     <div className="bg-gradient flex flex-col gap-4">
-      <h2 className="text-4xl font-thin text-white">Jose - #123</h2>
+      <h2 className="text-4xl font-thin text-white">
+        {user.name} - #{user.id}
+      </h2>
 
-      <p className="text-2xl text-white">Santa Cruz del Quiche, Quiche</p>
-      <p className="text-xl text-white">Un role del usuario</p>
+      <p className="text-2xl text-white">{user.location}</p>
+      <p className="text-xl text-white">{user.role}</p>
     </div>
   );
 };
